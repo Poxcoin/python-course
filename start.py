@@ -1,6 +1,9 @@
-from os import stat_result
+from rich.console import Console
+from rich.table import Table
+
 history = []
 total_balance = 0  
+console = Console()
 while True:
     coin_name = input("Введите имя монети: ")
 
@@ -27,14 +30,16 @@ while True:
     
     history.append(trade_info)
     total_balance = total_balance + profit
-    print(f"История всех сделок:{history}")
-    print(f"Общий баланс:{total_balance}USDT")
     
-    print("\n---ВАША ИСТОРИЯ СДЕЛОК ---")
-    
+    table = Table(title="Trade History")
+    table.add_column("Coin")
+    table.add_column("Profit")
     for trade in history:
         name = trade["name"]
-        res = trade["result"]
-        print(f"Монета: {name} | Прибиль: {res} USDT")
+        profit = trade ["result"]
+        table.add_row(name, f"{profit}USDT")
+        
+    console.print(table)
+    console.print(f"Total balance: {total_balance} USDT", style="bold blue")
 
     print("\n----------------")
